@@ -1,0 +1,4 @@
+cleanup()
+{
+  echo 'cleanup - stub'
+}

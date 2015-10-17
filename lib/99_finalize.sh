@@ -1,0 +1,4 @@
+finalize()
+{
+  echo "finalize - stub"
+}
