@@ -1,4 +1,4 @@
 cleanup()
 {
-  echo 'cleanup - stub'
+  cexec apt-get clean
 }

@@ -24,7 +24,13 @@ lxc.network.type = none
 # By mounting cgroups into container and
 # Using an AA profile that allows this
 lxc.mount.auto = cgroup
-lxc.aa_profile = lxc-container-default-with-nesting
+
+# Allow loop devices
+# http://askubuntu.com/questions/376345/allow-loop-mounting-files-inside-lxc-containers
+lxc.aa_profile = unconfined #lxc-container-default-with-nesting
+lxc.cgroup.devices.allow = b 7:* rwm
+lxc.cgroup.devices.allow = c 10:237 rwm
+
 EOF
 
 }
@@ -43,7 +49,7 @@ EOF
 bootstrap()
 {
   mkdir -p $CONTAINER_HOME/$CONTAINER_NAME
-  debootstrap --include=lxc,openssh-server --variant=minbase --arch amd64 trusty $CONTAINER_HOME/$CONTAINER_NAME/rootfs http://archive.ubuntu.com/ubuntu/
+  debootstrap --include=$PACKAGES --variant=minbase --arch amd64 trusty $CONTAINER_HOME/$CONTAINER_NAME/rootfs http://archive.ubuntu.com/ubuntu/
   lxc_config
   apt_sources
 }

@@ -15,7 +15,7 @@ fresh()
 {
   echo "Fresh build"
 
-  if [ -n "`lxc-ls | grep $CONTAINER_NAME`" ];then
+  if [ -n "`ps -auxf | grep lxc-start | grep $CONTAINER_NAME`" ];then
     echo "Stopping $CONTAINER_NAME"
     lxc-stop -n $CONTAINER_NAME -P $CONTAINER_HOME -k
   fi
@@ -28,6 +28,11 @@ fresh()
   if [ -d "$CONTAINER_HOME/$CONTAINER_NAME" ];then
     echo "Destroying $CONTAINER_HOME/$CONTAINER_NAME"
     rm -rf $CONTAINER_HOME/$CONTAINER_NAME
+  fi
+
+  if [ -d "$CONTAINER_OUTPUT" ];then
+    echo "Destroying output directory"
+    rm -rf  "$CONTAINER_OUTPUT"
   fi
 }
 
