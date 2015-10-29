@@ -19,7 +19,6 @@ usage()
 {
   cat << EOF | tee
 Usage:
-  -c cvisor     - build a supervisor image
   -f fresh      - performs a fresh build
   -d debug      - run in verbose debug mode
   -n name       - container and config name to use
@@ -39,11 +38,10 @@ EOF
 }
 
 # Parse options
-while getopts "cehdfn:s:p:o:i:" OPTION
+while getopts "ehdfn:s:p:o:i:" OPTION
 do
   case $OPTION in
-    c)
-      CONTAINER_SUPERVISOR=true
+    e)
       EMBED=true
       ;;
     f)

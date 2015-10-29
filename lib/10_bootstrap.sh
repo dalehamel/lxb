@@ -38,7 +38,7 @@ EOF
 # Set up apt sources
 apt_sources()
 {
-  cat > $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/apt/sources.list << EOF
+  cat >> $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/apt/sources.list << EOF
 deb http://archive.ubuntu.com/ubuntu trusty-updates main
 EOF
 }

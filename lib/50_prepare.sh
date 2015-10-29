@@ -4,8 +4,9 @@ prepare()
   # Some final updates
   cexec apt-get update
 
-  # Only install install ramfs tools on supervisor images
-  if [ $CONTAINER_SUPERVISOR ];then
-    cexec apt-get install -y linux-generic-lts-vivid
+  # Install extra packages that couldn't be done during debootstrap
+  # For instance, anything not on a component of the primary mirror
+  if [ -n "$EXTRA_PACKAGES" ];then
+    cexec apt-get install --no-install-recommends -y $EXTRA_PACKAGES
   fi
 }
