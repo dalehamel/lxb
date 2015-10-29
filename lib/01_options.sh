@@ -22,7 +22,7 @@ Usage:
   -c cvisor     - build a supervisor image
   -f fresh      - performs a fresh build
   -d debug      - run in verbose debug mode
-  -n name       - container name to use
+  -n name       - container and config name to use
   -p path       - path to container home
   -s source     - path to source container, if any
   -i include    - CSV of stages to include (defaults to all)

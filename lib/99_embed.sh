@@ -33,7 +33,7 @@ EOD
 EOF
 
 
-  # Prepare desired the initrd and kernel wit squashfs embedded
+  # Prepare the desired initrd and kernel with squashfs embedded
   cexec chmod +x $EMBED_SCRIPT
   cexec update-initramfs -u
 

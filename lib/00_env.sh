@@ -1,14 +1,26 @@
 # Container name and home
-CONTAINER_NAME='cvisor'
 CONTAINER_HOME='/u/lxc'
-CONTAINER_OUTPUT="/u/containers/$CONTAINER_NAME"
+CONTAINER_NAME=
+CONTAINER_OUTPUT=
 CONTAINER_SOURCE=
 
 # Sets up the default packages to install
-PACKAGES="lxc,openssh-server,initramfs-tools" #overlayroot may not be needed
+GLOBAL_PACKAGES=""
+
+# Packages to blacklist during debootstrap
+GLOBAL_BLACKLIST_PACKAGES="grub-pc-bin"
+
+# Directories to be excluded from final image
+GLOBAL_EXCLUDE_DIRS="/boot /usr/src"
 
 # Path to script used to embed squashfs into initramfs
 EMBED_SCRIPT="/etc/initramfs-tools/hooks/embed.sh"
+
+# The distro to use for debootstrap
+DISTRO=trusty
+
+# The mirror to use for debootsrap
+MIRROR=http://archive.ubuntu.com/ubuntu/
 
 # Set up default flags
 DEBUG=

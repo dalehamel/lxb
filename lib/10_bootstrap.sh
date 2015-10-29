@@ -39,8 +39,6 @@ EOF
 apt_sources()
 {
   cat > $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/apt/sources.list << EOF
-deb http://archive.ubuntu.com/ubuntu trusty main
-deb http://archive.ubuntu.com/ubuntu trusty universe
 deb http://archive.ubuntu.com/ubuntu trusty-updates main
 EOF
 }
@@ -49,7 +47,13 @@ EOF
 bootstrap()
 {
   mkdir -p $CONTAINER_HOME/$CONTAINER_NAME
-  debootstrap --include=$PACKAGES --variant=minbase --arch amd64 trusty $CONTAINER_HOME/$CONTAINER_NAME/rootfs http://archive.ubuntu.com/ubuntu/
+
+  # Set up include or exclude packages
+  PACKAGE_ARGS=""
+  [ -n $PACKAGES ] && PACKAGE_ARGS="$PACKAGE_ARGS --include=$(join , $GLOBAL_PACKAGES $PACKAGES)"
+  [ -n $BLACKLIST_PACKAGES ] && PACKAGE_ARGS="$PACKAGE_ARGS --exclude=$(join , $GLOBAL_BLACKLIST_PACKAGES $BLACKLIST_PACKAGES)"
+
+  debootstrap $PACKAGE_ARGS --variant=minbase --components main,universe --arch amd64 $DISTRO $CONTAINER_HOME/$CONTAINER_NAME/rootfs $MIRROR
   lxc_config
   apt_sources
 }

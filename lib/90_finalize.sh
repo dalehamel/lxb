@@ -1,5 +1,12 @@
 finalize()
 {
   mkdir -p $CONTAINER_OUTPUT
-  mksquashfs "$CONTAINER_HOME/$CONTAINER_NAME" $CONTAINER_OUTPUT/image.squashfs #-comp xz
+
+  if [ $CONTAINER_SUPERVISOR ];then
+    path="$CONTAINER_HOME/$CONTAINER_NAME/rootfs"
+  else
+    path="$CONTAINER_HOME/$CONTAINER_NAME"
+  fi
+
+  mksquashfs $path $CONTAINER_OUTPUT/image.squashfs -e "$(join , $GLOBAL_EXCLUDE_DIRS $EXCLUDE_DIRS)"
 }

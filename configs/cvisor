@@ -1,0 +1,15 @@
+CONTAINER_NAME='cvisor'
+CONTAINER_OUTPUT="/u/containers/$CONTAINER_NAME"
+CONTAINER_SOURCE=
+
+# Build in supervisor mode
+CONTAINER_SUPERVISOR=true
+
+# Use wily to support lxd
+DISTRO=wily
+
+# Sets up the default packages to install
+PACKAGES="lxc,lxd,openssh-server,initramfs-tools,live-boot" #overlayroot may not be needed
+
+# Packages to blacklist during debootstrap
+BLACKLIST_PACKAGES="thermald" 

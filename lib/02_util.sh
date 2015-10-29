@@ -1,7 +1,16 @@
 # Facilitate debugging
+
 debug()
 {
   set -x
+}
+
+# Joins a list on a delimiter
+join()
+{
+  local IFS="$1"
+  shift
+  echo "$*"
 }
 
 # Helper to execute inside the system
