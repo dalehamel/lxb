@@ -10,6 +10,7 @@ parse_include()
       cleanup) CLEANUP=true ;;
       finalize) FINALIZE=true ;;
       embed) EMBED=true ;;
+      iso) ISO=true ;;
       all) default_steps;;
     esac
   done

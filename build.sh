@@ -28,6 +28,7 @@ main()
   [ $CLEANUP ] && cleanup
   [ $FINALIZE ] && finalize
   [ $EMBED ] && embed
+  [ $ISO ] && generate_iso
 }
 
 main

@@ -9,7 +9,7 @@ EMBED=true
 DISTRO=wily
 
 # Sets up the default packages to install
-PACKAGES="lxc,lxd,openssh-server,initramfs-tools,live-boot" #overlayroot may not be needed
+PACKAGES="lxc,lxd,lxd-client,openssh-server,initramfs-tools,live-boot" #overlayroot may not be needed
 
 # Extra packages to be installed after debootstrap
 EXTRA_PACKAGES="linux-firmware linux-image-3.19.0-31-generic"
