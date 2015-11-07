@@ -1,27 +1,44 @@
-# What is this
+# Cvisor
 
-Builds a simple LXC container from scratch, and outputs a squashfs container.
+This is a framework to build debian (ubuntu) LXC containers from scratch.
 
-This squashfs container can be mounted as the base for an overlayfs.
+Optionally, a container can be transformed into a 'container-supervisor' or 'cvisor', running directly on the host.
 
-# Container Supervisor (cvisor)
+This provides a shim to run other LXC containers, potentially performing more complex or specialized tasks.
 
-Using a container build here, the cvisor supplies a simple base system to run other system containers.
+Thus, a generic host can take on other more specialized roles with relative ease - with no need to reboot, re-image, or reinstall.
 
-* On kernel will boot, 'toram' is used to load the cvisor image
-* The cvisor image can then manage other squashfs containers
-* By starting a squashfs container, the cvisor host can hand off effective control of the system to a system container
+# Embedded, live containers
 
-The cvisor is extremely minimal and should have the following traits:
+While LXC is used to build the live system, it is not necessary in order to run it. The output is a fully functioning system.
 
-* Nesting of cgroups (to run docker inside the system container)
-* Handling of signals
- * the cvisor should reboot if the system container sends a halt
-* Fetching of containers
- * The cvisor fetches and caches new system containers appropriately
-* Container rollout
- * The cvisor orchestrates starting and stopping of containers in a predictable way
- * This is useful for system upgrade
+The rootfs of the container can be exported and embedded as follows:
+
+* The system is squashed and compressed using squashfs with gzip.
+* The squashfs image is embedded into an initramfs
+* The initramfs uses debian live-boot with a small patch to load the squashfs image, and mount an overlay on top of it
+* A fully functioning read-write system with optional persistence can then be booted
+
+As only a kernel and the initramfs are required, this is extremely portable:
+
+* syslinux / isolinux may be used to easily create a livecd / iso / USB
+* A simple PXE config can be used for network booting
+
+The following kernel arguments are required in order to successfully boot:
+
+```
+boot=live root=/dev/ram0 live-media=initramfs
+```
+
+* boot=live - this triggers the necessary [live-boot](http://live.debian.net/manpages/stable/en/html/live-boot.7.html) initramfs scripts
+* root=/dev/ram0 - this tricks the kernel into using it's own initramfs as the root filesystem, so it won't panic
+* live-media=initramfs - this tells live-boot to look at it's own initramfs to find the embedded squashfs image
+
+So long as a bootloader can supply the above kernel arguments, and can load the kernel and initramfs, the cvisor can be booted.
+
+# Container supervisor
+
+The cvisor image contains [lxd](http://www.ubuntu.com/cloud/tools/lxd) to manage lxc images
 
 # Resources
 
