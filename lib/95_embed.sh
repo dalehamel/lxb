@@ -37,7 +37,7 @@ EOF
 
   # Inject our hook into the main script... unfortunately this seems to be necessary.
   patch_dir="$( dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ))/patches"
-  patch  -B  /tmp/gargbage -r - --forward "$CONTAINER_HOME/$CONTAINER_NAME/rootfs/lib/live/boot/9990-main.sh" < $patch_dir/fuck || true
+  patch  -B  /tmp/gargbage -r - --forward "$CONTAINER_HOME/$CONTAINER_NAME/rootfs/lib/live/boot/9990-main.sh" < $patch_dir/live-boot-patch || true
 
   # Prepare the desired initrd and kernel with squashfs embedded
   cexec chmod +x $EMBED_SCRIPT

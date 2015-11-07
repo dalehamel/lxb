@@ -19,6 +19,12 @@ cexec()
   lxc-attach -n $CONTAINER_NAME -P $CONTAINER_HOME -- $@
 }
 
+# Helper to execute inside the system
+chroot_exec()
+{
+  chroot $CONTAINER_HOME/$CONTAINER_NAME/rootfs $@
+}
+
 # Nukes the container for a completely fresh build
 fresh()
 {

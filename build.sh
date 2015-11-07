@@ -25,6 +25,7 @@ main()
   [ $BOOTSTRAP ] && bootstrap
   [ $INITIALIZE ] && initialize
   [ $PREPARE ] && prepare
+  [ $USER_SETUP ] && user_setup
   [ $CLEANUP ] && cleanup
   [ $FINALIZE ] && finalize
   [ $EMBED ] && embed

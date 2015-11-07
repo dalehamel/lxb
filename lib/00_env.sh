@@ -9,7 +9,7 @@ CONTAINER_SOURCE=
 # that can be appended from inside the config file.
 
 # Sets up the default packages to install
-GLOBAL_PACKAGES=""
+GLOBAL_PACKAGES="sudo"
 
 # Packages to blacklist during debootstrap
 GLOBAL_BLACKLIST_PACKAGES="grub-pc-bin"
@@ -26,28 +26,6 @@ DISTRO=trusty
 # The mirror to use for debootsrap
 MIRROR=http://archive.ubuntu.com/ubuntu/
 
-# Set up default flags
-DEBUG=
-FRESH=
-
-reset_steps()
-{
-  BOOTSTRAP=
-  INITIALIZE=
-  PREPARE=
-  CLEANUP=
-  FINALIZE=
-  EMBED=
-}
-
-default_steps()
-{
-  BOOTSTRAP=true
-  INITIALIZE=true
-  PREPARE=true
-  CLEANUP=true
-  FINALIZE=true
-}
-
-reset_steps
-default_steps
+# Admin settings (not secure)
+ADMIN_USERNAME=console
+ADMIN_PASSWORD=cvisor

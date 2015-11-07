@@ -1,3 +1,25 @@
+reset_steps()
+{
+  BOOTSTRAP=
+  INITIALIZE=
+  PREPARE=
+  USER_SETUP=
+  CLEANUP=
+  FINALIZE=
+  EMBED=
+  ISO=
+}
+
+default_steps()
+{
+  BOOTSTRAP=true
+  INITIALIZE=true
+  PREPARE=true
+  USER_SETUP=true
+  CLEANUP=true
+  FINALIZE=true
+}
+
 parse_include()
 {
   reset_steps
@@ -7,6 +29,7 @@ parse_include()
       bootstrap) BOOTSTRAP=true ;;
       initialize) INITIALIZE=true ;;
       prepare) PREPARE=true ;;
+      user) USER_SETUP=true ;;
       cleanup) CLEANUP=true ;;
       finalize) FINALIZE=true ;;
       embed) EMBED=true ;;
@@ -29,6 +52,7 @@ Usage:
     bootstrap     - bootstrap stage, sets up container
     initialize    - initialize stage, starts container
     prepare       - prepare stage, environmental setup inside container
+    user          - create the admin user with password and pubkey
     custom        - custom stage, anything else
     cleanup       - cleanup stage, free up space used by cached files
     finalize      - finalize stage, create an image of the container
@@ -37,8 +61,15 @@ Usage:
 EOF
 
 }
+# Set up default flags
+DEBUG=
+FRESH=
 
-# Parse options
+# Prepare the default steps
+reset_steps
+default_steps
+
+# Parse any other options given
 while getopts "ehdfn:s:p:o:i:" OPTION
 do
   case $OPTION in
@@ -73,4 +104,3 @@ do
       ;;
   esac
 done
-
