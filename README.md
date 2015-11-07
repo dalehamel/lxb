@@ -38,7 +38,39 @@ So long as a bootloader can supply the above kernel arguments, and can load the 
 
 # Container supervisor
 
-The cvisor image contains [lxd](http://www.ubuntu.com/cloud/tools/lxd) to manage lxc images
+The cvisor image contains [lxd](http://www.ubuntu.com/cloud/tools/lxd) to manage lxc images.
+
+More on this later.
+
+# Building containers
+
+Building containers is quite simple with few requirements:
+
+* A linux system with a modern kernel
+* lxc, squashfs-tools
+* optional (cdrom / iso support): syslinux, mkisofs
+
+A named config file describes a few variables that tells the framework how to build.
+
+To build cvisor:
+
+```
+./build.sh -n cvisor
+```
+
+This will result in a squashfs image, and a kernel/initramfs pair suitable for booting
+
+You can optionally run any of the build steps with the ```-i``` flag. To package the system up into an ISO:
+
+```
+./build -n cvisor -i iso
+```
+
+For additional help:
+
+```
+./build -h
+```
 
 # Resources
 

@@ -57,6 +57,7 @@ Usage:
     cleanup       - cleanup stage, free up space used by cached files
     finalize      - finalize stage, create an image of the container
     embed         - embed stage, embeds the squashfs container into an initramfs
+    iso           - embeds the kernel and initramfs into an ISO (not run default)
     all           - run all stages
 EOF
 
