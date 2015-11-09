@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CONTAINER_NAME="$(basename ${BASH_SOURCE[0]})"
+CONTAINER_NAME="$(basename $(dirname ${BASH_SOURCE[0]}))"
 CONTAINER_OUTPUT="/u/containers/$CONTAINER_NAME"
 CONTAINER_SOURCE=
 
@@ -17,11 +17,27 @@ PACKAGES="openssh-server,initramfs-tools,live-boot,lvm2"
 # Extra packages to be installed after debootstrap
 EXTRA_PACKAGES="vim ${network_packages}"
 
+EXCLUDE_PATTERN=()
+
 # Packages to blacklist during debootstrap
 BLACKLIST_PACKAGES=""
 
+KERNEL_ARGS="installtodisk"
+
 customize(){
-  script_path="$(dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ))/util/install.sh" 
+  script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/install.sh" 
   cp ${script_path} "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/install.sh"
+  cexec chmod +x "/install.sh"
   cexec apt-get install -y linux-generic-lts-vivid
+
+cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/rc.local" << EOF
+#!/bin/sh -e
+
+# Install the system to disk if the flag is given
+fi [ -n "\$(grep installtodisk /proc/cmdline)" ];then
+  /install.sh
+fi
+exit 0
+EOF
+
 }

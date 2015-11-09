@@ -90,7 +90,6 @@ finalize()
   chroot_exec apt-get remove live-boot --purge -y
   chroot_exec /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq grub-pc
   chroot_exec grub-install /dev/sda
-  chroot_exec apt-cache depends linux-image-generic-lts-vivid | grep 'Depends' | awk '{print $2}' | xargs -I@ chroot_exec apt-get install --reinstall @
   chroot_exec update-grub
 }
 

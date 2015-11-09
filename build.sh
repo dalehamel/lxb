@@ -9,7 +9,7 @@ set -e
 for f in lib/*.sh; do source $f; done
 
 # Set up the config for this build
-config="configs/$CONTAINER_NAME"
+config="configs/${CONTAINER_NAME}/config"
 
 if [ -f $config ];then
   source $config

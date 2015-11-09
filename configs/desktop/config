@@ -15,6 +15,8 @@ network_packages="network-manager,iproute2,bind9-host,iputils-ping,ifupdown" # n
 # Sets up the default packages to install
 PACKAGES="lxc,lxd,lxd-client,openssh-server,initramfs-tools,live-boot,${network_packages}"
 
+EXCLUDE_PATTERN=('boot/*' 'vmlinuz' 'initrd.img')
+
 # Extra packages to be installed after debootstrap
 EXTRA_PACKAGES="linux-firmware linux-image-3.19.0-31-generic"
 

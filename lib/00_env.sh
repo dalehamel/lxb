@@ -15,7 +15,7 @@ GLOBAL_PACKAGES="sudo"
 #GLOBAL_BLACKLIST_PACKAGES="grub-pc-bin"
 
 # Patterns to be excluded from final image
-GLOBAL_EXCLUDE_PATTERN=('boot/*' 'usr/src' 'var/lib/apt/lists/archive*')
+GLOBAL_EXCLUDE_PATTERN=('usr/src' 'var/lib/apt/lists/archive*')
 
 # Path to script used to embed squashfs into initramfs
 EMBED_SCRIPT="/etc/initramfs-tools/hooks/embed.sh"
