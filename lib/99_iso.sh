@@ -21,7 +21,7 @@ LABEL cvisor
       MENU LABEL CVisor
       LINUX /boot/vmlinuz
       INITRD /boot/initrd
-      APPEND console=ttyS1,115200 console=tty0 boot=live root=/dev/ram0 live-media=initramfs
+      APPEND boot=live root=/dev/ram0 live-media=initramfs console=ttyS1,115200 console=tty0 net.ifnames=0 biosdevname=0 apparmor=0 $KERNEL_ARGS
 EOF
 
   cp /usr/lib/syslinux/isolinux.bin $WORK_DIR/boot/isolinux/

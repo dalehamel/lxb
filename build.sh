@@ -26,6 +26,7 @@ main()
   [ $INITIALIZE ] && initialize
   [ $PREPARE ] && prepare
   [ $USER_SETUP ] && user_setup
+  [ $CUSTOMIZE ] && customize
   [ $CLEANUP ] && cleanup
   [ $FINALIZE ] && finalize
   [ $EMBED ] && embed

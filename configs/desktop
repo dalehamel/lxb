@@ -16,12 +16,9 @@ network_packages="network-manager,iproute2,bind9-host,iputils-ping,ifupdown" # n
 PACKAGES="lxc,lxd,lxd-client,openssh-server,initramfs-tools,live-boot,${network_packages}"
 
 # Extra packages to be installed after debootstrap
-EXTRA_PACKAGES=""
+EXTRA_PACKAGES="linux-firmware linux-image-3.19.0-31-generic"
 
 # Packages to blacklist during debootstrap
-BLACKLIST_PACKAGES=""
+BLACKLIST_PACKAGES="" # this is probably a bad idea as it's probably needed
 
-customize()
-{
-  cexec apt-get install --no-install-recommends -y linux-firmware linux-image-3.19.0-31-generic
-}
+DESKTOP="xorg,vim" #i3 deb http://debian.sur5r.net/i3/ wily universe

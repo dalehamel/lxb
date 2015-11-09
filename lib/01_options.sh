@@ -4,6 +4,7 @@ reset_steps()
   INITIALIZE=
   PREPARE=
   USER_SETUP=
+  CUSTOMIZE=
   CLEANUP=
   FINALIZE=
   EMBED=
@@ -16,6 +17,7 @@ default_steps()
   INITIALIZE=true
   PREPARE=true
   USER_SETUP=true
+  CUSTOMIZE=true
   CLEANUP=true
   FINALIZE=true
 }
@@ -30,6 +32,7 @@ parse_include()
       initialize) INITIALIZE=true ;;
       prepare) PREPARE=true ;;
       user) USER_SETUP=true ;;
+      customize) CUSTOMIZE=true ;;
       cleanup) CLEANUP=true ;;
       finalize) FINALIZE=true ;;
       embed) EMBED=true ;;

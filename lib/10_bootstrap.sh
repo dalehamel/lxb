@@ -50,10 +50,10 @@ bootstrap()
 
   # Set up include or exclude packages
   PACKAGE_ARGS=""
-  [ -n $PACKAGES ] && PACKAGE_ARGS="$PACKAGE_ARGS --include=$(join , $GLOBAL_PACKAGES $PACKAGES)"
-  [ -n $BLACKLIST_PACKAGES ] && PACKAGE_ARGS="$PACKAGE_ARGS --exclude=$(join , $GLOBAL_BLACKLIST_PACKAGES $BLACKLIST_PACKAGES)"
+  [ -n "${GLOBAL_PACKAGES}${PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --include=$(join , ${GLOBAL_PACKAGES} ${PACKAGES})"
+  [ -n "${GLOBAL_BLACKLIST_PACKAGES}${BLACKLIST_PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --exclude=$(join , ${GLOBAL_BLACKLIST_PACKAGES} ${BLACKLIST_PACKAGES})"
 
-  debootstrap $PACKAGE_ARGS --variant=minbase --components main,universe --arch amd64 $DISTRO $CONTAINER_HOME/$CONTAINER_NAME/rootfs $MIRROR
+  debootstrap "$([ -n "$DEBUG" ] && echo "--keep-debootstrap-dir")" $PACKAGE_ARGS --variant=minbase --components main,universe --arch amd64 $DISTRO $CONTAINER_HOME/$CONTAINER_NAME/rootfs $MIRROR
   lxc_config
   apt_sources
 }
