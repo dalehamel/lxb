@@ -1,0 +1,9 @@
+* Move packages into a packages file in 'profiles'
+* Move ubuntu specific code (where possible) to ubuntu profile
+ * cvisor will always need to be ubuntu because of live-boot
+* figure out if travis will work (sudo?)
+* Better docs
+ * Better describe how a config works
+* Formalize steps
+ * Look to ebuild / pkgbuild for inspiration and hook points
+ * Be able to stop at a step / pick up later (useful for packer)

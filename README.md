@@ -1,12 +1,12 @@
-# Cvisor
+# LXB - LinuX Builder
 
 This is a framework to build debian (ubuntu) LXC containers from scratch.
 
-Optionally, a container can be transformed into a 'container-supervisor' or 'cvisor', running directly on the host.
+## Applications
 
-This provides a shim to run other LXC containers, potentially performing more complex or specialized tasks.
-
-Thus, a generic host can take on other more specialized roles with relative ease - with no need to reboot, re-image, or reinstall.
+* Guest containers - in place of linux VMs or entire systems
+* Host container - read more on the containervisor (cvisor) below
+* Installers - use a live installer to quickly bootstrap a system by copying an existing system
 
 # Embedded, live containers
 
@@ -38,9 +38,15 @@ So long as a bootloader can supply the above kernel arguments, and can load the 
 
 # Container supervisor
 
+Optionally, a container can be transformed into a 'container-supervisor' or 'cvisor', running directly on the host.
+
 The cvisor image contains [lxd](http://www.ubuntu.com/cloud/tools/lxd) to manage lxc images.
 
-More on this later.
+This provides a shim to run other LXC containers, potentially performing more complex or specialized tasks.
+
+Thus, a generic host can take on other more specialized roles with relative ease - with no need to reboot, re-image, or reinstall.
+
+More on this later (lxd work in progress)
 
 # Building containers
 
