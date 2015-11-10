@@ -1,5 +1,5 @@
 # Container name and home
-CONTAINER_HOME='/u/lxc'
+[ -z "$CONTAINER_HOME" ] && CONTAINER_HOME='/u/lxc'
 CONTAINER_NAME=
 CONTAINER_OUTPUT=
 CONTAINER_SOURCE=

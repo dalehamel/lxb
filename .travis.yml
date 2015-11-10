@@ -1,3 +1,4 @@
+sudo: required
 env:
   global:
     - CONTAINER_HOME=/home/travis
