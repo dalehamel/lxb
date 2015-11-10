@@ -40,9 +40,9 @@ prepare_lvm()
   device=$1
 
   lvremove -ff vg0
-  vgremove -ff -y vg0
+  vgremove -ff vg0
   pvremove -ff -y $device
-  wipefs -f -a $device
+  wipefs -a $device
 
   pvcreate ${device}
   vgcreate vg0 ${device}
@@ -84,9 +84,24 @@ chroot_exec()
   umount -l ${mountpoint}
 }
 
+rekey()
+{
+  echo "Regenerating random seed"
+  # Let's re-seed the random pool while we're re-keying.
+  POOLSIZE=512
+  SAVEDFILE=/var/lib/urandom/random-seed
+  [ -f /proc/sys/kernel/random/poolsize ] && POOLSIZE="$(cat /proc/sys/kernel/random/poolsize)"
+  chroot_exec dd if=/dev/urandom of=$SAVEDFILE bs=$POOLSIZE count=1
+
+  echo "Regenerating ssh host keys"
+  chroot_exec rm -f /etc/ssh/ssh_host*
+  chroot_exec ssh-keygen -A
+}
+
 finalize()
 {
   chroot_exec apt-get update
+  chroot_exec apt-get remove live-boot --purge -y
   chroot_exec apt-get remove live-boot --purge -y
   chroot_exec /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq grub-pc
   chroot_exec grub-install /dev/sda
@@ -99,6 +114,7 @@ install()
   prepare_lvm /dev/sda1
   initialize_filesystems
   install_system
+  rekey
   finalize
 }
 

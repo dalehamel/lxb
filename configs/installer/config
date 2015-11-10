@@ -34,8 +34,8 @@ cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/rc.local" << EOF
 #!/bin/sh -e
 
 # Install the system to disk if the flag is given
-fi [ -n "\$(grep installtodisk /proc/cmdline)" ];then
-  /install.sh
+if [ -n "\$(grep installtodisk /proc/cmdline)" ];then
+  /install.sh 2>&1 > /var/log/installer.log
 fi
 exit 0
 EOF

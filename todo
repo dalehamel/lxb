@@ -1,3 +1,7 @@
+* YAML/JSON format for jq installer
+ * jq support in installer
+ * Disk layout, network interfaces
+ * ntp server, resolvers
 * Move packages into a packages file in 'profiles'
 * Move ubuntu specific code (where possible) to ubuntu profile
  * cvisor will always need to be ubuntu because of live-boot
