@@ -1,12 +1,8 @@
 * Move packages into a packages file in 'profiles'
-* Move ubuntu specific code (where possible) to ubuntu profile
- * cvisor will always need to be ubuntu because of live-boot
-* figure out if travis will work (sudo?)
+ * have different 'package sets' globally, allow configs to pull from them.
+ * keep comma separated, space separate programatically where needed
+  * create library function for this
+* Get user config (username/password/sshkey) from an rc file
 * Better docs
  * Better describe how a config works
-* Formalize steps
- * Look to ebuild / pkgbuild for inspiration and hook points
- * Be able to stop at a step / pick up later (useful for packer)
-* Security stuff
- * delete and regenerate ssh keys
- * re-seed the entropy
+* figure out if travis will work (sudo?)
