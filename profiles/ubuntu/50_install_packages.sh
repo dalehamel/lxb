@@ -1,7 +1,7 @@
 # Anything needed to set up the actual system
-prepare()
+install_packages()
 {
-  # 
+  # Perform an update of apt sources
   cexec apt-get update
 
   # Install extra packages that couldn't be done during debootstrap

@@ -1,8 +1,7 @@
 generate_iso()
 {
 
-  # Ensure we have the packages we need
-#  apt-get install syslinux-common mkisofs -y
+  # FIXME: ensure syslinux, isolinux, and mkisofs are present
 
   # Prepare a temparary directory
   WORK_DIR=$(mktemp -d)

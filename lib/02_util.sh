@@ -1,8 +1,19 @@
+# Assorted global utility functions
+
 # Facilitate debugging
 
 debug()
 {
   set -x
+}
+
+defined()
+{
+  set +e
+  declare -F $1 > /dev/null
+  rc=$?
+  set -e
+  return $rc
 }
 
 # Joins a list on a delimiter
@@ -49,5 +60,11 @@ fresh()
     echo "Destroying output directory"
     rm -rf  "$CONTAINER_OUTPUT"
   fi
+}
+
+start_container()
+{
+  # Start the container in the background
+  lxc-start -n $CONTAINER_NAME -P $CONTAINER_HOME -d
 }
 

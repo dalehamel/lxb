@@ -5,9 +5,11 @@ CONTAINER_OUTPUT="/u/containers/$CONTAINER_NAME"
 CONTAINER_SOURCE=
 
 # Embed into an initramfs
-EMBED=true
+DO_EMBED=true
 
 DISTRO=trusty
+
+PROFILE=ubuntu
 
 network_packages="network-manager iproute2 bind9-host iputils-ping ifupdown" # not sure what to do here
 
