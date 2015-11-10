@@ -2,6 +2,11 @@
 # - Parses command line options
 # - sets default build steps
 
+debug()
+{
+  set -x
+}
+
 reset_steps()
 {
   DO_LXC_CONFIG=
@@ -113,11 +118,12 @@ do
   esac
 done
 
+# Set debug if specified
+[ $DEBUG ] && debug
+
 # Set up the config for this build
 ROOT_DIR="$(dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ))"
 CONFIG_PATH="${ROOT_DIR}/configs/${CONTAINER_NAME}/config"
-PROFILE_PATH="${ROOT_DIR}/profiles/${PROFILE}"
-LIBRARY_PATH="${ROOT_DIR}/lib"
 
 # Load the selected config
 if [ -f $CONFIG_PATH ];then
@@ -127,11 +133,12 @@ else
   exit 1
 fi
 
-if
+PROFILE_PATH="${ROOT_DIR}/profiles/${PROFILE}"
 
 # Load the profile for the config
-if [ -f $PROFILE_PATH ];then
+if [ -d ${PROFILE_PATH} ];then
   for f in ${PROFILE_PATH}/*.sh; do source $f; done
 else
   echo "The profile ${PROFILE} does not exist, please specify a profile at ${PROFILE_PATH}"
+  exit 1
 fi

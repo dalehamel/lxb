@@ -11,21 +11,20 @@ for f in ${ROOT_DIR}/lib/*.sh; do source $f; done
 
 main()
 {
-  [ $DEBUG ] && debug
   [ $FRESH ] && fresh
-
-  if [ $DO_LXC_CONFIG ];then
-    # Configure LXC
-    if defined pre_lxc_config; then pre_lxc_config; fi
-    if defined lxc_config; then lxc_config; fi
-    if defined post_lxc_config; then post_lxc_config; fi
-  fi
 
   if [ $DO_INIT_ROOT ];then
     # Setup the root filesystem
     if defined pre_init_root; then pre_init_root; fi
     if defined init_root; then init_root; fi
     if defined post_init_root; then post_init_root; fi
+  fi
+
+  if [ $DO_LXC_CONFIG ];then
+    # Configure LXC
+    if defined pre_lxc_config; then pre_lxc_config; fi
+    if defined lxc_config; then lxc_config; fi
+    if defined post_lxc_config; then post_lxc_config; fi
   fi
 
   if [ $DO_INSTALL_PACKAGES ];then

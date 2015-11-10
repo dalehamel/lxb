@@ -2,11 +2,6 @@
 
 # Facilitate debugging
 
-debug()
-{
-  set -x
-}
-
 defined()
 {
   set +e
