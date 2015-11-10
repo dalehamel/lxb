@@ -2,7 +2,9 @@ sudo: required
 env:
   global:
     - CONTAINER_HOME=/home/travis
+    - RUNLEVEL=1 # don't start services
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install debootstrap lxc
+  - sudo apt-get install debootstrap
+  - sudo apt-get install lxc
 script: ./build.sh -n installer
