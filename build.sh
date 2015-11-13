@@ -25,6 +25,7 @@ main()
     if defined pre_lxc_config; then pre_lxc_config; fi
     if defined lxc_config; then lxc_config; fi
     if defined post_lxc_config; then post_lxc_config; fi
+    start_container
   fi
 
   if [ $DO_INSTALL_PACKAGES ];then

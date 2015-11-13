@@ -3,7 +3,7 @@ finalize()
   mkdir -p $CONTAINER_OUTPUT
 
   # Make the root the real root if it's to be embedded
-  if [ $EMBED ];then
+  if [ $DO_EMBED ];then
     path="$CONTAINER_HOME/$CONTAINER_NAME/rootfs"
   else
     path="$CONTAINER_HOME/$CONTAINER_NAME"
