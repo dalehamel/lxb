@@ -7,6 +7,9 @@ CONTAINER_SOURCE=
 # Embed into an initramfs
 DO_EMBED=true
 
+# Build an ISO for testing purposes
+DO_GENERATE_ISO=true
+
 DISTRO=trusty
 
 PROFILE=ubuntu
@@ -35,11 +38,21 @@ customize(){
 cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/rc.local" << EOF
 #!/bin/sh -e
 
-# Install the system to disk if the flag is given
-if [ -n "\$(grep installtodisk /proc/cmdline)" ];then
-  /install.sh 2>&1 > /var/log/installer.log
+# Fetch and run script at onboot_script_url if given
+if [ -n "\$(onboot_script_url= /proc/cmdline)" ];then
+
+  # Read the script URL from /proc/cmdline
+  url_param=$(grep -o 'onboot_script_url=\S*\s' /proc/cmdline)
+  url=$(${url_param#onboot_script_url=})
+
+  curl $url > /onboot_script
+  chmod +x /onboot_script
+
+  /onboot_script 2>&1 > /var/log/onboot_script.log
+
 fi
 exit 0
 EOF
+  cexec chmod +x "/etc/rc.local"
 
 }
