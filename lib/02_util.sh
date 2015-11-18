@@ -23,6 +23,7 @@ join()
 cexec()
 {
   lxc-attach -n $CONTAINER_NAME -P $CONTAINER_HOME -- $@
+  return $?
 }
 
 # Helper to execute inside the system

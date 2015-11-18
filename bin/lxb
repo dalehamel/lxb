@@ -6,7 +6,7 @@
 set -e
 
 # Import library functions in lexical order
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_DIR="$( dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ))"
 for f in ${ROOT_DIR}/lib/*.sh; do source $f; done
 
 main()
@@ -26,6 +26,7 @@ main()
     if defined lxc_config; then lxc_config; fi
     if defined post_lxc_config; then post_lxc_config; fi
     start_container
+    if defined lxc_wait_network; then lxc_wait_network; fi
   fi
 
   if [ $DO_INSTALL_PACKAGES ];then

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+CONTAINER_NAME="$(basename $(dirname ${BASH_SOURCE[0]}))"
+CONTAINER_OUTPUT="/u/containers/$CONTAINER_NAME"
+CONTAINER_SOURCE=
+
+# Embed into an initramfs
+DO_EMBED=true
+
+# Build an ISO for testing purposes
+DO_GENERATE_ISO=true
+
+DISTRO=trusty
+
+PROFILE=ubuntu
+
+# Sets up the default packages to install
+PACKAGES="initramfs-tools,network-manager,iproute2,net-tools,ifupdown,iputils-ping,bind9-host"
+
+# Extra packages to be installed after debootstrap
+EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl ca-certificates grub-pc vim"
+
+EXCLUDE_PATTERN=()
+
+# Packages to blacklist during debootstrap
+BLACKLIST_PACKAGES=""
+
+ADMIN_PUBKEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQ8/Dfpr40S9LpUdDjNsp75LNDc1GwUXguosm+Eq267amk8hyWBHNCrV38XBsaCm4/ht7ayIEumIMGB+pb+oK5ZeeXZ8lv9RPWrNBHv+IZlDrjNYA8NXgMw4eH6CJBeA+BQ2SdLRctTAKmSBhTzKoyxydF4xLbGFnXJ81p0ES68i96Qz8wfRw6SLcBkrQB9/f1R7DrN5xmecOaYp8DALLpcxRfze/P/l4KETgqaKJWi+kWSh1j9RpKJdDLdPu9DOhMQ17q1mr6eUCdmNZiOT1n2OJbvBFNiHeuGLC4zHIIhLTUCfysOvPKGeaY8QdrtGYFJjDe6B+gn8Z1TOx6Audb dale.hamel@mainframe"
+
+customize(){
+  cexec apt-get install -y linux-generic-lts-vivid
+}

@@ -25,6 +25,37 @@ exec /sbin/getty -L 115200 ttyS1 vt102 -t 600
 EOF
 }
 
+_sudoers()
+{
+  cat > $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/sudoers <<EOF
+Defaults      !lecture,tty_tickets,!fqdn
+
+# User privilege specification
+root          ALL=(ALL) ALL
+
+
+# Members of the group 'sysadmin' may gain root privileges
+%sysadmin ALL=(ALL) NOPASSWD:ALL
+# Members of the group 'admin' may gain root privileges
+%admin ALL=(ALL) NOPASSWD:ALL
+# Members of the group 'sudo' may gain root privileges
+%sudo ALL=(ALL) NOPASSWD:ALL
+
+#includedir /etc/sudoers.d
+EOF
+}
+
+_bridge_interfaces()
+{
+  cat > $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/network/interfaces <<EOF
+auto br0
+iface br0 inet dhcp
+        bridge_ports eth0
+        bridge_fd 0
+        bridge_maxwait 0
+EOF
+}
+
 _dhcp_interfaces()
 {
   cat > $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/network/interfaces <<EOF
@@ -50,5 +81,7 @@ init_root()
   [ -n "${GLOBAL_BLACKLIST_PACKAGES}${BLACKLIST_PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --exclude=$(join , ${GLOBAL_BLACKLIST_PACKAGES} ${BLACKLIST_PACKAGES})"
   debootstrap $([ -n "$DEBUG" ] && echo "--keep-debootstrap-dir" ) $PACKAGE_ARGS --variant=minbase --components main,universe --arch amd64 $DISTRO $CONTAINER_HOME/$CONTAINER_NAME/rootfs $MIRROR
   _apt_sources
+  _dhcp_interfaces
+  _sudoers
   _serial_console_service
 }
