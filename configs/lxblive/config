@@ -33,8 +33,11 @@ customize(){
   cexec chmod +x "/install.sh"
   cexec apt-get install -y linux-generic-lts-vivid
 
-cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/rc.local" << EOF
-#!/bin/sh -e
+  ONBOOT_PATH="/etc/lxb_onboot_script"
+
+  cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/${ONBOOT_PATH}" << EOF
+#!/bin/bash 
+set -e
 set -x
 
 wait_network()
@@ -74,5 +77,15 @@ if [ -n "\$(grep onboot_script_url= /proc/cmdline)" ];then
 fi
 exit 0
 EOF
-  cexec chmod +x "/etc/rc.local"
+
+  cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/init/onboot_script.conf" << EOF
+start on (started networking)
+
+script
+  ${ONBOOT_PATH}
+end script
+EOF
+
+  cexec chmod +x ${ONBOOT_PATH}
+
 }
