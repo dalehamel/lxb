@@ -64,24 +64,38 @@ iface lo inet loopback
 
 auto eth0
 iface eth0 inet dhcp
-
-auto eth1
-iface eth1 inet dhcp
 EOF
 }
 
 # Set it up from scratch
 init_root()
 {
-  mkdir -p $CONTAINER_HOME/$CONTAINER_NAME
+  mkdir -p $CONTAINER_HOME/$CONTAINER_NAME/rootfs
+  echo $CONTAINER_SOURCE
+  if [ -n "$CONTAINER_SOURCE" ];then 
+    lowerdir=$(mktemp -d /tmp/lxb-lower-XXXX)
+    upper_base=$(mktemp -d /tmp/lxb-upper-XXXX)
+    upperdir="${upper_base}/upper"
+    workdir="${upper_base}/work"
+    overlay=$CONTAINER_HOME/$CONTAINER_NAME/rootfs
 
-  # Set up include or exclude packages
-  PACKAGE_ARGS=""
-  [ -n "${GLOBAL_PACKAGES}${PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --include=$(join , ${GLOBAL_PACKAGES} ${PACKAGES})"
-  [ -n "${GLOBAL_BLACKLIST_PACKAGES}${BLACKLIST_PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --exclude=$(join , ${GLOBAL_BLACKLIST_PACKAGES} ${BLACKLIST_PACKAGES})"
-  debootstrap $([ -n "$DEBUG" ] && echo "--keep-debootstrap-dir" ) $PACKAGE_ARGS --variant=minbase --components main,universe --arch amd64 $DISTRO $CONTAINER_HOME/$CONTAINER_NAME/rootfs $MIRROR
+    mount -o loop $CONTAINER_SOURCE $lowerdir
+    mount -t tmpfs tmpfs -o noatime $upper_base
+    mkdir -p $workdir
+    mkdir -p $upperdir
+    mount -t overlay overlay -o lowerdir=$lowerdir,upperdir=$upperdir,workdir=$workdir $overlay
+  else 
+    # Set up include or exclude packages
+    PACKAGE_ARGS=""
+    [ -n "${GLOBAL_PACKAGES}${PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --include=$(join , ${GLOBAL_PACKAGES} ${PACKAGES})"
+    [ -n "${GLOBAL_BLACKLIST_PACKAGES}${BLACKLIST_PACKAGES}" ] && PACKAGE_ARGS="${PACKAGE_ARGS} --exclude=$(join , ${GLOBAL_BLACKLIST_PACKAGES} ${BLACKLIST_PACKAGES})"
+    debootstrap $([ -n "$DEBUG" ] && echo "--keep-debootstrap-dir" ) $PACKAGE_ARGS --variant=minbase --components main,universe --arch amd64 $DISTRO $CONTAINER_HOME/$CONTAINER_NAME/rootfs $MIRROR
+  fi
+
   _apt_sources
   _dhcp_interfaces
   _sudoers
   _serial_console_service
+
+
 }

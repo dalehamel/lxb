@@ -37,10 +37,16 @@ fresh()
 {
   echo "Fresh build"
 
+
   if [ -n "`ps -auxf | grep lxc-start | grep $CONTAINER_NAME`" ];then
     echo "Stopping $CONTAINER_NAME"
     lxc-stop -n $CONTAINER_NAME -P $CONTAINER_HOME -k
   fi
+
+  grep $CONTAINER_HOME/$CONTAINER_NAME/rootfs /etc/mtab -q && umount $CONTAINER_HOME/$CONTAINER_NAME/rootfs
+  for tmp in "$(ls -1 /tmp | grep lxb)"; do
+    [ -n "$tmp" ] && [ -d "/tmp/${tmp}" ] && umount "/tmp/${tmp}"
+  done
 
   if [ -d "$CONTAINER_HOME/$CONTAINER_NAME/config" ];then
     echo "Destroying $CONTAINER_NAME"

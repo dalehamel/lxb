@@ -11,4 +11,6 @@ install_packages()
   if [ -n "$EXTRA_PACKAGES" ];then
     cexec /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get install -y $EXTRA_PACKAGES
   fi
+
+  cexec locale-gen en_US.UTF-8
 }

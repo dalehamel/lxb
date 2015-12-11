@@ -15,9 +15,9 @@ generate_iso()
   mkdir -p $WORK_DIR/boot/isolinux
 
 cat > $WORK_DIR/boot/isolinux/isolinux.cfg <<EOF
-DEFAULT cvisor
-LABEL cvisor
-      MENU LABEL CVisor
+DEFAULT 
+LABEL ubuntu
+      MENU LABEL Ubuntu
       LINUX /boot/vmlinuz
       INITRD /boot/initrd
       APPEND boot=live root=/dev/ram0 live-media=initramfs console=ttyS1,115200 console=tty0 net.ifnames=0 biosdevname=0 apparmor=0 $KERNEL_ARGS

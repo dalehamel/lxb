@@ -118,6 +118,7 @@ do
   esac
 done
 
+echo $CONTAINER_SOURCE
 # Set debug if specified
 [ $DEBUG ] && debug
 

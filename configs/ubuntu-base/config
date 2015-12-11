@@ -2,7 +2,6 @@
 
 CONTAINER_NAME="$(basename $(dirname ${BASH_SOURCE[0]}))"
 CONTAINER_OUTPUT="/u/containers/$CONTAINER_NAME"
-CONTAINER_SOURCE=
 
 # Embed into an initramfs
 DO_EMBED=true
@@ -15,10 +14,10 @@ DISTRO=trusty
 PROFILE=ubuntu
 
 # Sets up the default packages to install
-PACKAGES="initramfs-tools,network-manager,iproute2,net-tools,ifupdown,iputils-ping,bind9-host"
+PACKAGES="initramfs-tools,iproute2,net-tools,ifupdown,iputils-ping,bind9-host,ubuntu-minimal,ubuntu-standard"
 
 # Extra packages to be installed after debootstrap
-EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl ca-certificates grub-pc vim"
+EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl netcat ca-certificates grub-pc vim dmidecode pciutils binutils util-linux"
 
 EXCLUDE_PATTERN=()
 

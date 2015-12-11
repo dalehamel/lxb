@@ -31,7 +31,7 @@ lxc.mount.auto = cgroup
 
 # Allow loop devices
 # http://askubuntu.com/questions/376345/allow-loop-mounting-files-inside-lxc-containers
-lxc.aa_profile = unconfined #lxc-container-default-with-nesting
+lxc.aa_profile = lxc-container-default-with-nesting #unconfined
 lxc.cgroup.devices.allow = b 7:* rwm
 lxc.cgroup.devices.allow = c 10:237 rwm
 

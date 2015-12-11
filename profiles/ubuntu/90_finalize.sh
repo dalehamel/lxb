@@ -1,5 +1,6 @@
 finalize()
 {
+  cexec locale-gen en_US.UTF-8
   mkdir -p $CONTAINER_OUTPUT
 
   # Make the root the real root if it's to be embedded

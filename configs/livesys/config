@@ -15,10 +15,10 @@ DISTRO=trusty
 PROFILE=ubuntu
 
 # Sets up the default packages to install
-PACKAGES="initramfs-tools,live-boot,network-manager,iproute2,net-tools,ifupdown,iputils-ping,bind9-host"
+PACKAGES="initramfs-tools,live-boot,network-manager,iproute2,net-tools,ifupdown,iputils-ping,bind9-host,ntp,ntpdate,ubuntu-minimal,ubuntu-standard"
 
 # Extra packages to be installed after debootstrap
-EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl ca-certificates lxc grub-pc vim"
+EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl ca-certificates grub-pc vim dmidecode pciutils binutils util-linux squashfs-tools"
 
 EXCLUDE_PATTERN=()
 
@@ -28,9 +28,13 @@ BLACKLIST_PACKAGES=""
 KERNEL_ARGS="installtodisk"
 
 customize(){
-  script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/install.sh" 
-  cp ${script_path} "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/install.sh"
-  cexec chmod +x "/install.sh"
+
+  echo "deb http://ppa.launchpad.net/ubuntu-lxc/stable/ubuntu ${DISTRO} main" >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
+  cexec gpg --keyserver keyserver.ubuntu.com --recv 7635B973
+  cexec gpg --export --armor 7635B973 | sudo apt-key add -
+  cexec apt-get update
+
+  cexec apt-get install -y lxc
   cexec apt-get install -y linux-generic-lts-vivid
 
   ONBOOT_PATH="/etc/lxb_onboot_script"
@@ -72,7 +76,7 @@ if [ -n "\$(grep onboot_script_url= /proc/cmdline)" ];then
   curl \$url > /onboot_script
   chmod +x /onboot_script
 
-  /onboot_script 2>&1 > /var/log/onboot_script.log
+  /onboot_script
 
 fi
 exit 0
