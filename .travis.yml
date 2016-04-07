@@ -5,8 +5,8 @@ env:
     - CONTAINER_HOME=/home/travis
     - RUNLEVEL=1 # don't start services
 before_install:
-  - echo 'deb http://archive.ubuntu.com/ubuntu/ trusty-updates main universe multiverse' | sudo tee -a /etc/apt/sources.list
+  - echo 'deb http://archive.ubuntu.com/ubuntu/ trusty-backports main universe multiverse' | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
   - sudo apt-get install -y --force-yes debootstrap
-  - sudo apt-get install -y --force-yes lxc -t trusty-updates
+  - sudo apt-get install -o Dpkg::Options::="--force-confnew" -y --force-yes lxc -t trusty-backports
 script: ./bin/lxb -n livesys -d
