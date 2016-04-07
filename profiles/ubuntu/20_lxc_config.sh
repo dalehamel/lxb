@@ -17,12 +17,11 @@ lxc.rootfs = $CONTAINER_HOME/$CONTAINER_NAME/rootfs
 
 # Network configuration
 # Just use host networking
-#lxc.network.type = none # WARNING - under this configuration, signals to container init hit the host init.
 lxc.network.type = veth
 lxc.network.flags = up
 
 ## that's the interface defined above in host's interfaces file
-lxc.network.link = br0
+lxc.network.link = lxcbr0
 
 # Enable nesting of containers
 # By mounting cgroups into container and
@@ -40,6 +39,7 @@ EOF
 
 lxc_wait_network()
 {
+  [ -f $CONTAINER_HOME/$CONTAINER_NAME/rootfs/etc/init/cgmanager.conf ] && cexec sudo status cgmanager | grep -q running && cexec stop cgmanager || true
   MAX_RETRIES=6
   retries=0
   echo "Waiting for network"

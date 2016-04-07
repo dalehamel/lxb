@@ -43,6 +43,8 @@ fresh()
     lxc-stop -n $CONTAINER_NAME -P $CONTAINER_HOME -k
   fi
 
+  lxc-stop -n $CONTAINER_NAME -P $CONTAINER_HOME -k || true
+
   grep $CONTAINER_HOME/$CONTAINER_NAME/rootfs /etc/mtab -q && umount $CONTAINER_HOME/$CONTAINER_NAME/rootfs
   for tmp in "$(ls -1 /tmp | grep lxb)"; do
     [ -n "$tmp" ] && [ -d "/tmp/${tmp}" ] && umount "/tmp/${tmp}"

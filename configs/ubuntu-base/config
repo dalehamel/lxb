@@ -14,10 +14,10 @@ DISTRO=trusty
 PROFILE=ubuntu
 
 # Sets up the default packages to install
-PACKAGES="initramfs-tools,iproute2,net-tools,ifupdown,iputils-ping,bind9-host,ubuntu-minimal,ubuntu-standard"
+PACKAGES="iproute2,net-tools,ifupdown,iputils-ping,bind9-host,ubuntu-minimal,ubuntu-standard"
 
 # Extra packages to be installed after debootstrap
-EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl netcat ca-certificates grub-pc vim dmidecode pciutils binutils util-linux"
+EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl netcat ca-certificates grub-pc vim dmidecode pciutils binutils util-linux initramfs-tools"
 
 EXCLUDE_PATTERN=()
 

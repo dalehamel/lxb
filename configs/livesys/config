@@ -15,10 +15,10 @@ DISTRO=trusty
 PROFILE=ubuntu
 
 # Sets up the default packages to install
-PACKAGES="initramfs-tools,live-boot,network-manager,iproute2,net-tools,ifupdown,iputils-ping,bind9-host,ntp,ntpdate,ubuntu-minimal,ubuntu-standard"
+PACKAGES="iproute2,net-tools,ifupdown,iputils-ping,bind9-host,ntp,ntpdate,ubuntu-minimal,ubuntu-standard,curl,ca-certificates,wget"
 
 # Extra packages to be installed after debootstrap
-EXTRA_PACKAGES="openssh-server lvm2 parted mdadm curl ca-certificates grub-pc vim dmidecode pciutils binutils util-linux squashfs-tools"
+EXTRA_PACKAGES="openssh-server lvm2 parted mdadm grub-pc vim dmidecode pciutils binutils util-linux squashfs-tools initramfs-tools live-boot ipmitool"
 
 EXCLUDE_PATTERN=()
 
@@ -29,34 +29,56 @@ KERNEL_ARGS="installtodisk"
 
 customize(){
 
+  # Get ruby
+  echo "deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu ${DISTRO} main " >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
+  cexec gpg --keyserver keyserver.ubuntu.com --recv C3173AA6 
+  cexec apt-get update
+  cexec apt-get install -y --force-yes ruby2.3 ruby-switch
+  cexec ruby-switch --set ruby2.3
+
+  # Get megacli
+  cexec curl http://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key -o /tmp/megaraid_gpg
+  cexec apt-key add /tmp/megaraid_gpg
+  echo 'deb http://hwraid.le-vert.net/debian jessie main' >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
+  cexec apt-get update
+  cexec apt-get install -y --force-yes megacli
+
+
   echo "deb http://ppa.launchpad.net/ubuntu-lxc/stable/ubuntu ${DISTRO} main" >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
   cexec gpg --keyserver keyserver.ubuntu.com --recv 7635B973
-  cexec gpg --export --armor 7635B973 | sudo apt-key add -
+  #cexec gpg --export --armor 7635B973 | sudo apt-key add -
   cexec apt-get update
 
-  cexec apt-get install -y lxc
+  cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/usr/sbin/policy-rc.d" << EOF
+#!/bin/sh
+echo "All runlevel operations denied by policy" >&2
+exit 101
+EOF
+  cexec chmod a+x /usr/sbin/policy-rc.d
+  cexec apt-get install -y --force-yes lxc
   cexec apt-get install -y linux-generic-lts-vivid
+  rm "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/usr/sbin/policy-rc.d"
+
 
   ONBOOT_PATH="/etc/lxb_onboot_script"
-
-  cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/${ONBOOT_PATH}" << EOF
+  cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/${ONBOOT_PATH}" << 'EOF'
 #!/bin/bash 
 set -e
 set -x
 
 wait_network()
 {
-  MAX_RETRIES=6
+  MAX_RETRIES=20
   retries=0
   echo "Waiting for network"
-  while [ -z "\$(ip route | grep 'default' | awk '{print \$3}')" ];do
-    ip="\$(ip route | grep 'default' | awk '{print \$3}')"
-    if [ -n "\${ip}" ];then
-      ping -t 1 -c 1 \${ip} > /dev/null
-      [ \$? -eq 0 ] && break
+  while [ -z "$(ip route | grep 'default' | awk '{print $3}')" ];do
+    ip="$(ip route | grep 'default' | awk '{print $3}')"
+    if [ -n "${ip}" ];then
+      ping -t 1 -c 1 ${ip} > /dev/null
+      [ $? -eq 0 ] && break
     fi
-    retries=\$[\$retries +1]
-    if [ \$retries -gt \$MAX_RETRIES ];then
+    retries=$[$retries +1]
+    if [ $retries -gt $MAX_RETRIES ];then
       echo "Network failed to come up"
       exit 1
     fi
@@ -67,13 +89,13 @@ wait_network()
 
 wait_network
 # Fetch and run script at onboot_script_url if given
-if [ -n "\$(grep onboot_script_url= /proc/cmdline)" ];then
+if [ -n "$(grep onboot_script_url= /proc/cmdline)" ];then
 
   # Read the script URL from /proc/cmdline
-  url_param=\$(grep -o 'onboot_script_url=\S*' /proc/cmdline)
-  url=\${url_param#onboot_script_url=}
+  url_param=$(grep -o 'onboot_script_url=\S*' /proc/cmdline)
+  url=${url_param#onboot_script_url=}
 
-  curl \$url > /onboot_script
+  curl $url > /onboot_script
   chmod +x /onboot_script
 
   /onboot_script
