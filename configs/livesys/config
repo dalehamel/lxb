@@ -28,8 +28,6 @@ BLACKLIST_PACKAGES=""
 KERNEL_ARGS="installtodisk"
 
 customize(){
-  cexec sudo mkdir -p /home/$USER/.gnupg
-
   # Get ruby
   echo "deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu ${DISTRO} main " >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
   cexec sudo gpg --keyserver keyserver.ubuntu.com --recv C3173AA6
