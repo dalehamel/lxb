@@ -9,6 +9,9 @@ env:
 before_install:
   - echo 'deb http://archive.ubuntu.com/ubuntu/ trusty-backports main universe multiverse' | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
+  - sudo apt-get install -y --force-yes syslinux
+  - sudo apt-get install -y --force-yes mkisofs
+  - sudo apt-get install -y --force-yes squashfs-tools
   - sudo apt-get install -y --force-yes debootstrap
   - sudo apt-get install -o Dpkg::Options::="--force-confnew" -y --force-yes lxc -t trusty-backports
 script: sudo ./bin/lxb -n livesys -d
