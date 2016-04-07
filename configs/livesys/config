@@ -31,23 +31,23 @@ customize(){
 
   # Get ruby
   echo "deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu ${DISTRO} main " >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
-  cexec gpg --keyserver keyserver.ubuntu.com --recv C3173AA6 
-  cexec apt-get update
-  cexec apt-get install -y --force-yes ruby2.3 ruby-switch
-  cexec ruby-switch --set ruby2.3
+  cexec sudo gpg --keyserver keyserver.ubuntu.com --recv C3173AA6
+  cexec sudo apt-get update
+  cexec sudo apt-get install -y --force-yes ruby2.3 ruby-switch
+  cexec sudo ruby-switch --set ruby2.3
 
   # Get megacli
-  cexec curl http://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key -o /tmp/megaraid_gpg
-  cexec apt-key add /tmp/megaraid_gpg
+  cexec sudo curl http://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key -o /tmp/megaraid_gpg
+  cexec sudo apt-key add /tmp/megaraid_gpg
   echo 'deb http://hwraid.le-vert.net/debian jessie main' >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
-  cexec apt-get update
-  cexec apt-get install -y --force-yes megacli
+  cexec sudo apt-get update
+  cexec sudo apt-get install -y --force-yes megacli
 
 
   echo "deb http://ppa.launchpad.net/ubuntu-lxc/stable/ubuntu ${DISTRO} main" >> "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/etc/apt/sources.list"
-  cexec gpg --keyserver keyserver.ubuntu.com --recv 7635B973
+  cexec sudo gpg --keyserver keyserver.ubuntu.com --recv 7635B973
   #cexec gpg --export --armor 7635B973 | sudo apt-key add -
-  cexec apt-get update
+  cexec sudo apt-get update
 
   cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/usr/sbin/policy-rc.d" << EOF
 #!/bin/sh
@@ -62,7 +62,7 @@ EOF
 
   ONBOOT_PATH="/etc/lxb_onboot_script"
   cat > "${CONTAINER_HOME}/${CONTAINER_NAME}/rootfs/${ONBOOT_PATH}" << 'EOF'
-#!/bin/bash 
+#!/bin/bash
 set -e
 set -x
 
